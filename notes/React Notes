@@ -1,1 +1,7 @@
-notes for React:
+notes for React: component takes in parameters called props (properties) and returns 
+a hierarchy of views to display via the render method.
+Render method returns a description of what you want to see on the screen. React is what
+takes the description and displays the result. Render returns a react element.
+App.js is used to create a component.
+styles.css is used to define the styles for your react app.
+index.js is the bridge between the component in App.js and the web browser.
