@@ -1,0 +1,2 @@
+I attempted to work on my tasks for sprint 2 but I could not complete them because I am not very educated in react and I was causing many errors
+So I had to delete and restart my tasks and do them for sprint 3.
