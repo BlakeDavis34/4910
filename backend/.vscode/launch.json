@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "demo-login-backend:index.handler (nodejs18.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "${workspaceFolder}/lambda-package/demo-login-backend",
+                "lambdaHandler": "index.handler"
+            },
+            "lambda": {
+                "runtime": "nodejs18.x",
+                "payload": {},
+                "environmentVariables": {}
+            }
+        }
+    ]
+}
