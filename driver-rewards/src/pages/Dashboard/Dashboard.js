@@ -17,7 +17,7 @@ const Dashboard = () => {
                 Cookies.set('TruckName', '')
                 setCurrUser('')
                 window.location.reload()
-            }}>Logout</button>
+            }}><br/><br/>Logout</button>
         </div>
     )
 }

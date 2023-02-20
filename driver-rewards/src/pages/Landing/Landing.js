@@ -93,7 +93,6 @@ const Landing = ({authState, changeAuthState}) => {
         }
 
         console.log("name = " + name + " email = " + email + " username = " + username + " password = " + password)
-        // changeAuthState(true)
     }
 
     const registerForm = (<div>
