@@ -19,6 +19,9 @@ const Landing = ({authState, changeAuthState}) => {
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [address, setAddress] = useState('')
+    const [birthday, setBirthday] = useState('')
+    const [gender, setGender] = useState('')
 
     const [error, setError] = useState('')
     const [isAuthing, setAuthing] = useState('true')
@@ -101,8 +104,8 @@ const Landing = ({authState, changeAuthState}) => {
             name: <input type="text" value={name} onChange={event => setName(event.target.value)}/> <br/>
             email: <input type="text" value={email} onChange={event => setEmail(event.target.value)}/> <br/>
             username: <input type="text" value={username} onChange={event => setUsername(event.target.value)}/> <br/>
-            password: <input type="password" value={password} onChange={event => setPassword(event.target.value)}/>
-            <br/>
+            password: <input type="password" value={password} onChange={event => setPassword(event.target.value)}/> <br/>
+            address: <input type="text" value={address} onChange={event => setAddress(event.target.value)} /> <br/>
             <input type="submit" value="Sign up"/>
         </form>
     </div>)
