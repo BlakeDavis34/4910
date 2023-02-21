@@ -57,7 +57,11 @@ const Landing = ({authState, changeAuthState}) => {
 
             axios.post(baseUrl + 'login', requestBody, requestConfig).then((response) => {
                 Cookies.set('TruckSession', response.data.token)
+                Cookies.set('TruckName', response.data.user.name)
                 Cookies.set('TruckUser', response.data.user.username)
+                Cookies.set('TruckEmail', response.data.user.email)
+                Cookies.set('TruckBirthday', response.data.user.birthday)
+                Cookies.set('TruckGender', response.data.user.gender)
 
                 console.log("COOKIE = " + Cookies.get('TruckSession'))
 
