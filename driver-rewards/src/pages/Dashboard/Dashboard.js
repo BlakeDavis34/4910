@@ -15,6 +15,9 @@ const Dashboard = () => {
             <button onClick={(e) => {
                 Cookies.set('TruckSession', '')
                 Cookies.set('TruckName', '')
+                Cookies.set('TruckUsername', '')
+                Cookies.set('TruckBirthday', '')
+                Cookies.set('TruckGender', '')
                 setCurrUser('')
                 window.location.reload()
             }}><br/><br/>Logout</button>
