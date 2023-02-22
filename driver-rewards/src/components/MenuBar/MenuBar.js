@@ -30,10 +30,6 @@ const MenuBar = () => {
                 </MenuButton>
                 <MenuList>
                     <MenuGroup title='Account'>
-                    <MenuItem as='button' onClick={() => {
-                            window.location.href = "/dashboard"
-                        }} href="/dashboard">Dashboard</MenuItem>
-
                         <MenuItem as='button' onClick={() => {
                             window.location.href = "/profile"
                         }} href="/profile">Profile</MenuItem>

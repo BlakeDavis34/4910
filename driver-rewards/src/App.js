@@ -23,14 +23,14 @@ function App() {
         setAuth(newState)
     }
 
-    if(!auth){
-        return(
-            <Landing
-                authState={auth}
-                changeAuthState={authStateChange}
-            />
-        )
-    }
+    // if(!auth){
+    //     return(
+    //         <Landing
+    //             authState={auth}
+    //             changeAuthState={authStateChange}
+    //         />
+    //     )
+    // }
 
     return (
         <div className="App">
@@ -44,7 +44,8 @@ function App() {
 
                 <div className="content">
                     <Switch>
-                        <Route exact path="/" component={Dashboard}/>
+                        <Route exact path="/" component={Landing}/>
+                        <Route exact path="/dashboard" component={Dashboard}/>
                         <Route exact path="/profile" component={Profile}/>
                     </Switch>
 
