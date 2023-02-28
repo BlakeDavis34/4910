@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     Checkbox,
+    Select,
     Container,
     Divider,
     FormControl,
@@ -11,11 +12,15 @@ import {
     Input,
     Stack,
     Text,
+    SelectField,
+    Center,
+
 } from '@chakra-ui/react'
 import { PasswordField } from './PassField'
 import {useState} from "react";
 import { AnimateSharedLayout, motion } from "framer-motion";
 import { BiArrowBack } from 'react-icons/bi'
+import { BsCheckCircle } from 'react-icons/bs'
 import authtools from '../../authtools'
 import axios from 'axios'
 
@@ -40,6 +45,8 @@ export const Login = () => {
     let navButton = <></>
     let submitButton = <></>
 
+    let headerText = func === 'login' ? "Log in" : (func === 'apply') ? "Apply to be a Driver" : (func === 'reset') ? "Reset Password" : ""
+
     //DRIVER APPLY
     if(func === 'apply'){
 
@@ -62,21 +69,57 @@ export const Login = () => {
 
         form = (
             <>
+
                 <FormControl>
-                    <FormLabel htmlFor="email">Username</FormLabel>
-                    <Input id="text" type="text" value={username} onChange={(event) => {
-                        setUsername(event.target.value)
-                        console.log("state = " + username)
-                    }}/>
+
+                    <FormLabel htmlFor="email">Sponsor Company</FormLabel>
+                    <SelectField placeholder="Select a company">
+                        <option value='option1'>ABC Trucking Co.</option>
+                        <option value='option2'>DEF Trucking Co.</option>
+                    </SelectField>
+
+                    <Stack spacing="5">
+                        <br/>
+                        <Divider/>
+                        <FormLabel htmlFor="email">Name</FormLabel>
+                        <Input id="text" type="text" onChange={(event) => {
+
+                            console.log("state = " + username)
+                        }}/>
+                        <FormLabel htmlFor="email">Username</FormLabel>
+                        <Input id="text" type="text" value={username} onChange={(event) => {
+                            setUsername(event.target.value)
+                            console.log("state = " + username)
+                        }}/>
+                        <FormLabel htmlFor="email">Email</FormLabel>
+                        <Input id="apply-email" type="email"  onChange={(event) => {
+                            console.log(event.target.value)
+                        }}/>
+
+                        <Divider/>
+
+                        <FormLabel htmlFor="email">Password</FormLabel>
+                        <PasswordField
+                            onChange={(event) => {
+                                setPassword(event.target.value)
+                            }}
+                        />
+
+                        <FormLabel htmlFor="email">Confirm password</FormLabel>
+                        <PasswordField/>
+                    </Stack>
+
                 </FormControl>
             </>
         )
 
         submitButton = (
-            <Button>Submit Application</Button>
+            <Button onClick={() => {
+                setFunc("applied")
+            }}>Submit Application</Button>
         )
 
-    //PASSWORD RESET
+        //PASSWORD RESET
     } else if (func === 'reset'){
 
         submitButton = (
@@ -107,8 +150,8 @@ export const Login = () => {
             </HStack>
         )
 
-    // LOGIN
-    } else {
+        // LOGIN
+    } else if(func === 'login') {
 
         submitButton = (
             <Button onClick = {() => {
@@ -148,6 +191,7 @@ export const Login = () => {
                             console.log("state = " + username)
                         }}/>
                     </FormControl>
+                    <FormLabel htmlFor="email">Password</FormLabel>
                     <PasswordField
                         onChange={(event) => {
                             setPassword(event.target.value)
@@ -163,6 +207,18 @@ export const Login = () => {
                 </HStack>
             </>
         )
+    } else if(func === 'applied') {
+        form = (
+            <>
+                <Text fontSize='2xl' align="center">Application Submitted</Text>
+                <Center>
+                    <BsCheckCircle size="100" color="green"/>
+                </Center>
+                <Text align="center">
+                    We'll email you when you're accepted.
+                </Text>
+            </>
+        )
     }
 
 
@@ -176,7 +232,7 @@ export const Login = () => {
                 <Stack spacing="8">
                     <Stack spacing="6">
                         <Stack spacing={{base: '4', md: '3'}} textAlign="center">
-                            <Heading size={{base: 'sm', md: 'md'}}>Log in to your account</Heading>
+                            <Heading size={{base: 'sm', md: 'md'}}>{headerText}</Heading>
                             <HStack spacing="1" justify="center">
                             </HStack>
                         </Stack>

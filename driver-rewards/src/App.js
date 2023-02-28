@@ -3,6 +3,8 @@ import React from "react"
 import Dashboard from "./pages/Dashboard/Dashboard"
 import Landing from "./pages/Landing/Landing"
 import Profile from "./pages/Profile/Profile"
+import Applications from "./pages/Applications/Applications"
+import Activities from './pages/Activities/Activities'
 import "./App.css"
 import MenuBar from './components/MenuBar/MenuBar'
 
@@ -47,6 +49,8 @@ function App() {
                         <Route exact path="/" component={Landing}/>
                         <Route exact path="/dashboard" component={Dashboard}/>
                         <Route exact path="/profile" component={Profile}/>
+                        <Route exact path="/applications" component={Applications}/>
+                        <Route exact path="/activities" component={Activities}/>
                     </Switch>
 
                 </div>

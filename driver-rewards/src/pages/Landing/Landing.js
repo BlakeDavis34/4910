@@ -106,7 +106,7 @@ const Landing = ({authState, changeAuthState}) => {
         <div className="landing-container">
             <header className="landing-header">
                 <h5>
-                    Roadie/Trukt
+                    CabCaddy
                 </h5>
             </header>
 
