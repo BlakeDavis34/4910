@@ -3,6 +3,7 @@ import React, {useState} from "react"
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import * as authtools from '../../authtools'
+import { Select } from '@chakra-ui/react'
 
 const requestConfig = {
     headers: {
@@ -20,7 +21,7 @@ const Landing = ({authState, changeAuthState}) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [address, setAddress] = useState('')
-    const [birthday, setBirthday] = useState('')
+    const [date, setDate] = useState(new Date())
     const [gender, setGender] = useState('')
 
     const [error, setError] = useState('')
@@ -106,6 +107,15 @@ const Landing = ({authState, changeAuthState}) => {
             username: <input type="text" value={username} onChange={event => setUsername(event.target.value)}/> <br/>
             password: <input type="password" value={password} onChange={event => setPassword(event.target.value)}/> <br/>
             address: <input type="text" value={address} onChange={event => setAddress(event.target.value)} /> <br/>
+            date of birth: <input type="date" value={date} onChange={e=>setDate(e.target.value)} /> <br/>
+            <Select variant="outline" placeholder="Choose Gender">
+                <option value="gender">Female</option>
+                <option value="gender">Male</option>
+                <option value="gender">Non-Binary</option>
+            </Select>
+            
+            
+
             <input type="submit" value="Sign up"/>
         </form>
     </div>)
