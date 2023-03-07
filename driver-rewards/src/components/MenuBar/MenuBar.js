@@ -1,6 +1,7 @@
 import './MenuBar.css'
 
 import React from 'react'
+import Cookies from "js-cookie";
 
 import {
     Menu,
@@ -22,6 +23,14 @@ const testFunc = () => {
 
 const MenuBar = () => {
 
+    const name = Cookies.get('TruckName')
+    const user = Cookies.get('TruckUser')
+    const email = Cookies.get('TruckEmail')
+    const birthday = Cookies.get('TruckBirthday')
+    const gender = Cookies.get('TruckGender')
+
+    const [currUser, setCurrUser] = React.useState(user)
+
     return (
         <div className="menu-items">
             <Menu>
@@ -30,14 +39,18 @@ const MenuBar = () => {
                 </MenuButton>
                 <MenuList>
                     <MenuGroup title='Account'>
-                    <MenuItem as='button' onClick={() => {
-                            window.location.href = "/dashboard"
-                        }} href="/dashboard">Dashboard</MenuItem>
-
                         <MenuItem as='button' onClick={() => {
                             window.location.href = "/profile"
                         }} href="/profile">Profile</MenuItem>
-                        <MenuItem>Logout</MenuItem>
+                        <MenuItem as='button' onClick={() => {
+                            Cookies.set('TruckSession', '')
+                            Cookies.set('TruckName', '')
+                            Cookies.set('TruckUsername', '')
+                            Cookies.set('TruckBirthday', '')
+                            Cookies.set('TruckGender', '')
+                            setCurrUser('')
+                            window.location.href = "/"
+                        }}>Logout</MenuItem>
                     </MenuGroup>
 
                 </MenuList>
