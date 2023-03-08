@@ -3,6 +3,12 @@ import React, {useState} from "react"
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import * as authtools from '../../authtools'
+import Login from "../../components/Login/Login";
+import {
+    Divider
+} from "@chakra-ui/react";
+import {BrowserRouter, Route} from "react-router-dom";
+import Dashboard from "../Dashboard/Dashboard";
 
 const requestConfig = {
     headers: {
@@ -19,16 +25,12 @@ const Landing = ({authState, changeAuthState}) => {
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [address, setAddress] = useState('')
-    const [birthday, setBirthday] = useState('')
-    const [gender, setGender] = useState('')
 
     const [error, setError] = useState('')
     const [isAuthing, setAuthing] = useState('true')
 
     if (Cookies.get('TruckSession') && Cookies.get('TruckUser')) {
         console.log("checking auth state...")
-
 
         const requestBody = {
             user: {
@@ -98,40 +100,29 @@ const Landing = ({authState, changeAuthState}) => {
         console.log("name = " + name + " email = " + email + " username = " + username + " password = " + password)
     }
 
-    const registerForm = (<div>
-        <form onSubmit={handleSubmit}>
-            <h4>Register</h4>
-            name: <input type="text" value={name} onChange={event => setName(event.target.value)}/> <br/>
-            email: <input type="text" value={email} onChange={event => setEmail(event.target.value)}/> <br/>
-            username: <input type="text" value={username} onChange={event => setUsername(event.target.value)}/> <br/>
-            password: <input type="password" value={password} onChange={event => setPassword(event.target.value)}/> <br/>
-            address: <input type="text" value={address} onChange={event => setAddress(event.target.value)} /> <br/>
-            <input type="submit" value="Sign up"/>
-        </form>
-    </div>)
-
-    const loginForm = (<div>
-        <form onSubmit={handleSubmit}>
-            <h4>Login</h4>
-            username: <input type="text" value={username} onChange={event => setUsername(event.target.value)}/> <br/>
-            password: <input type="password" value={password} onChange={event => setPassword(event.target.value)}/>
-            <br/>
-            <input type="submit" value="Login"/>
-        </form>
-    </div>)
-
-    let renderForm = isLogin ? loginForm : registerForm
 
     return (
-        <>
-            <h5 className='landing-header'>
-                Landing Page
-            </h5>
-            <button className="logregbutton" onClick={() => setIsLogin(true)}>Login</button>
-            <button className="logregbutton" onClick={() => setIsLogin(false)}>Register</button>
-            {renderForm}
-            {error}
-        </>
+
+        <div className="landing-container">
+            <header className="landing-header">
+                <h5>
+                    CabCaddy
+                </h5>
+            </header>
+
+            <Divider colorScheme="gray"/>
+
+
+            <BrowserRouter>
+                <Login/>
+                {/*<Route exact path="/" component={Login}/>*/}
+            </BrowserRouter>
+            {/*<button className="logregbutton" onClick={() => setIsLogin(true)}>Login</button>*/}
+            {/*<button className="logregbutton" onClick={() => setIsLogin(false)}>Register</button>*/}
+            {/*{renderForm}*/}
+            {/*{error}*/}
+
+        </div>
     )
 }
 
