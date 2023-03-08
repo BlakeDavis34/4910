@@ -3,6 +3,9 @@ import React from "react"
 import Dashboard from "./pages/Dashboard/Dashboard"
 import Landing from "./pages/Landing/Landing"
 import Profile from "./pages/Profile/Profile"
+import Applications from "./pages/Applications/Applications"
+import Activities from './pages/Activities/Activities'
+import ActivityCreate from './pages/Activities/CreateActivity'
 import "./App.css"
 import MenuBar from './components/MenuBar/MenuBar'
 
@@ -23,14 +26,14 @@ function App() {
         setAuth(newState)
     }
 
-    if(!auth){
-        return(
-            <Landing
-                authState={auth}
-                changeAuthState={authStateChange}
-            />
-        )
-    }
+    // if(!auth){
+    //     return(
+    //         <Landing
+    //             authState={auth}
+    //             changeAuthState={authStateChange}
+    //         />
+    //     )
+    // }
 
     return (
         <div className="App">
@@ -44,8 +47,12 @@ function App() {
 
                 <div className="content">
                     <Switch>
-                        <Route exact path="/" component={Dashboard}/>
+                        <Route exact path="/" component={Landing}/>
+                        <Route exact path="/dashboard" component={Dashboard}/>
                         <Route exact path="/profile" component={Profile}/>
+                        <Route exact path="/applications" component={Applications}/>
+                        <Route exact path="/activities" component={Activities}/>
+                        <Route exact path="/activities/create" component={ActivityCreate}/>
                     </Switch>
 
                 </div>
@@ -55,3 +62,4 @@ function App() {
 }
 
 export default App;
+
