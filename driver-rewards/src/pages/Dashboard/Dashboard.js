@@ -1,23 +1,39 @@
-import React from 'react'
-import Cookies from "js-cookie";
-import * as authtools from "../../authtools";
-import axios from "axios";
+import React, {useEffect, useState} from 'react'
+import authtools from "../../authtools";
+import Loading from "../../components/Loading/loading";
+import utils from "../../utils"
 
 const Dashboard = () => {
 
-    const user = Cookies.get('TruckUser')
+    const [user, setUser] = useState({})
+    const [loading, setLoading] = useState(true)
 
-    const [currUser, setCurrUser] = React.useState(user)
+    useEffect(() => {
+        try {
+            setLoading(true)
+            authtools.getUser().then((response) => {
+                console.log("AT GETDATA = " + JSON.stringify(response.data))
+                setLoading(false)
+                setUser((response.data.user))
+            })
+        } catch (error) {
+            setLoading(false);
+            authtools.handleError(error)
+            console.log(error);
+        }
+    }, []);
+
+    if(loading){
+        return (
+            <Loading/>
+        )
+    }
 
     return (
         <div>
-            Hello {currUser}
-            <button onClick={(e) => {
-                Cookies.set('TruckSession', '')
-                Cookies.set('TruckName', '')
-                setCurrUser('')
-                window.location.reload()
-            }}><br/><br/>Logout</button>
+            Hello {user.username}
+            <br/>
+            User is {JSON.stringify(user)}
         </div>
     )
 }
