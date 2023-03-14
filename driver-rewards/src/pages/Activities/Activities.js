@@ -66,6 +66,30 @@ const activities = [
     )
 ]
 
+//function to display all activities in table
+const displayActivities = () => {
+    let aList = []
+    activities.forEach(a => {
+        aList.push(
+            <>
+                <Tr>
+                    <Td>{a.name}</Td>
+                    <Td>{a.description}</Td>
+                    <Td>{a.deadline}</Td>
+                    <Td>
+                        <Progress colorScheme='green' size='sm' value={a.progress * 100} />
+                    </Td>
+                    <Td>{a.points}</Td>
+                    <Td>
+                        <Button>View</Button>
+                    </Td>
+                </Tr>
+            </>
+        )
+    })
+    return aList
+}
+
 const Activities = () => {
 
     const[table, setTable] = useState([]);
@@ -88,42 +112,7 @@ const Activities = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>{activities[0].name}</Td>
-                            <Td>{activities[0].description}</Td>
-                            <Td>{activities[0].deadline}</Td>
-                            <Td>
-                                <Progress colorScheme='green' size='sm' value={activities[0].progress * 100} />
-                            </Td>
-                            <Td>{activities[0].points}</Td>
-                            <Td>
-                                <Button>View</Button>
-                            </Td>
-                        </Tr>
-                        <Tr>
-                            <Td>{activities[1].name}</Td>
-                            <Td>{activities[1].description}</Td>
-                            <Td>{activities[1].deadline}</Td>
-                            <Td>
-                                <Progress colorScheme='green' size='sm' value={activities[1].progress * 100} />
-                            </Td>
-                            <Td>{activities[1].points}</Td>
-                            <Td>
-                                <Button>View</Button>
-                            </Td>
-                        </Tr>
-                        <Tr>
-                            <Td>{activities[2].name}</Td>
-                            <Td>{activities[2].description}</Td>
-                            <Td>{activities[2].deadline}</Td>
-                            <Td>
-                                <Progress colorScheme='green' size='sm' value={activities[2].progress * 100} />
-                            </Td>
-                            <Td>{activities[2].points}</Td>
-                            <Td>
-                                <Button>View</Button>
-                            </Td>
-                        </Tr>
+                        {displayActivities()}
                     </Tbody>
                     <Tfoot><Tr><Td>
                     <div className="sort-options">
