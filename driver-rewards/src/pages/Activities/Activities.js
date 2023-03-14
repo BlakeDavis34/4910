@@ -1,3 +1,5 @@
+import './Activities.css'
+
 import {
     Table,
     Thead,
@@ -11,72 +13,63 @@ import {
     Text,
     Button,
     Progress,
-    Card,
-    CardBody,
-    CardFooter,
-    Heading,
     Image,
     Divider,
     Stack,
-    Link
+    Link,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    MenuItemOption,
+    MenuGroup,
+    MenuOptionGroup,
+    MenuDivider,
+    Flex,
+    Grid
     // createColumnHelper
 } from '@chakra-ui/react'
 
 import {useState} from "react";
 
+//function that acts as a struct
+function activity(name, description, deadline, progress, points) {
+    this.name = name;
+    this.description = description;
+    this.deadline = deadline;
+    this.progress = progress;
+    this.points = points;
+}
+
+//premade activities, will fill with activities from API later
 const activities = [
-    {
-        name: 'Drive 1000 miles',
-        description: 'Drive 1000 miles by Friday for 100 points!',
-        deadline: '3/3/2023',
-        progress: 45/100,
-        points: 100
-    },
+    new activity (
+        'Drive 1000 miles', 
+        'Drive 1000 miles by Friday for 100 points!',
+        '4/17/2023',
+        45/100,
+        100
+    ),
+    new activity (
+        'Avoid traffic violations',
+        'Avoid traffic violations all week for 50 points!',
+        '3/19/2023',
+        33/100,
+        50
+    ),
+    new activity (
+        'Daily login streak',
+        'Log in every day for 20 points!',
+        '3/15/2023',
+        0/100,
+        20
+    )
 ]
-
-const activityCard = (
-
-
-
-    <>
-        <Card maxW='sm'>
-            <CardBody>
-                <Image
-                    src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-                    alt='Green double couch with wooden legs'
-                    borderRadius='lg'
-                />
-                <Stack mt='6' spacing='3'>
-                    <Heading size='md'>Living room Sofa</Heading>
-                    <Text>
-                        This sofa is perfect for modern tropical spaces, baroque inspired
-                        spaces, earthy toned spaces and for people who love a chic design with a
-                        sprinkle of vintage design.
-                    </Text>
-                    <Text color='blue.600' fontSize='2xl'>
-                        $450
-                    </Text>
-                </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-                <Button>Close</Button>
-            </CardFooter>
-        </Card>
-    </>
-)
 
 const Activities = () => {
 
-    const [card, setCard] = useState(true)
+    const[table, setTable] = useState([]);
 
-    //console.log("drivers = " + JSON.stringify(driverlist))
-
-    //const columnHelper = createColumnHelper
-
-    if(card){
-
-    }
     return (
         <>
             <Text fontSize="3xl">Activities</Text>
@@ -95,8 +88,6 @@ const Activities = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {/*{driverlist}*/}
-
                         <Tr>
                             <Td>{activities[0].name}</Td>
                             <Td>{activities[0].description}</Td>
@@ -104,15 +95,64 @@ const Activities = () => {
                             <Td>
                                 <Progress colorScheme='green' size='sm' value={activities[0].progress * 100} />
                             </Td>
-                            {/*<Td>{activities[0].progress}</Td>*/}
                             <Td>{activities[0].points}</Td>
                             <Td>
                                 <Button>View</Button>
                             </Td>
                         </Tr>
-
+                        <Tr>
+                            <Td>{activities[1].name}</Td>
+                            <Td>{activities[1].description}</Td>
+                            <Td>{activities[1].deadline}</Td>
+                            <Td>
+                                <Progress colorScheme='green' size='sm' value={activities[1].progress * 100} />
+                            </Td>
+                            <Td>{activities[1].points}</Td>
+                            <Td>
+                                <Button>View</Button>
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <Td>{activities[2].name}</Td>
+                            <Td>{activities[2].description}</Td>
+                            <Td>{activities[2].deadline}</Td>
+                            <Td>
+                                <Progress colorScheme='green' size='sm' value={activities[2].progress * 100} />
+                            </Td>
+                            <Td>{activities[2].points}</Td>
+                            <Td>
+                                <Button>View</Button>
+                            </Td>
+                        </Tr>
                     </Tbody>
-
+                    <Tfoot><Tr><Td>
+                    <div className="sort-options">
+                        <Menu>
+                            <MenuButton id = "sort-button" as={Button} colorScheme='blue' alignContent="right">
+                                Sort
+                            </MenuButton>
+                            <MenuList>
+                                <MenuGroup title='Sort by:'>
+                                    <MenuItem as='button' onClick={() => {
+                                        activities.sort((a, b) => a.name.localeCompare(b.name))
+                                        setTable([...table, activities]);
+                                    }}>Name</MenuItem>
+                                    <MenuItem as='button' onClick={() => {
+                                        activities.sort((a, b) => {
+                                            let da = new Date(a.deadline),
+                                                db = new Date(b.deadline);
+                                            return da - db;
+                                        })
+                                        setTable([...table, activities]);
+                                    }}>Deadline</MenuItem>
+                                    <MenuItem as='button' onClick={() => {
+                                        activities.sort((a, b) => {return b.points - a.points})
+                                        setTable([...table, activities]);
+                                    }}>Points</MenuItem>
+                                </MenuGroup>
+                            </MenuList>
+                        </Menu>
+                    </div></Td></Tr></Tfoot>
                 </Table>
             </TableContainer>
         </>
