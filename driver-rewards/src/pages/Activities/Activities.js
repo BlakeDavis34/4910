@@ -34,6 +34,15 @@ const activities = [
     },
 ]
 
+const getActivities = () => {
+    let actList = []
+    activities.forEach(a => {
+        actList.push(<>
+        {/*<Th></Th>*/}
+        </>)
+    })
+}
+
 const activityCard = (
 
 

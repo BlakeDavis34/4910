@@ -49,7 +49,7 @@ const Profile = () => {
                     borderRadius='full'
                     boxSize='150px'
                     src='https://www.sosyncd.com/wp-content/uploads/2022/03/18.png'
-                    alt='Dan Abramov'
+                    alt='I got some birds like Im Julio'
                 />
             </Center>
             <Center>

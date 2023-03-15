@@ -17,22 +17,28 @@ import {
     Progress,
 } from '@chakra-ui/react'
 import { PasswordField } from './PassField'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { AnimateSharedLayout, motion } from "framer-motion";
 import { BiArrowBack } from 'react-icons/bi'
 import { BsCheckCircle } from 'react-icons/bs'
+import Loading from '../Loading/loading'
 import authtools from '../../authtools'
 import axios from 'axios'
 
 const requestConfig = {
     headers: {
-        'x-api-key': 'x6GaDjuUzPa0MBiphcMoo30GQJm06K6IaD6sSPWf',
+        'Content-Type': 'application/json',
+        'x-api-key': 'x6GaDjuUzPa0MBiphcMoo30GQJm06K6IaD6sSPWf'
     }
 }
 
 const baseUrl = 'https://o63s0n6hl9.execute-api.us-east-1.amazonaws.com/login-demo/'
 
 export const Login = () => {
+
+    const [loading, setLoading] = useState(false)
+
+    const [sponsors, setSponsors] = useState([])
 
     const [login, setLogin] = useState({
         username: '',
@@ -46,17 +52,62 @@ export const Login = () => {
         email: '',
         password: '',
         confirm: '',
-        DOB: '',
+        dob: '',
         dlNum: 0
     })
 
     const [reset, setReset] = useState('')
 
+    const [error, setError] = useState('')
+
+    const [func, setFunc] = useState('login')
+
+    // side effect to handle loading of sponsors for apply page
+    useEffect(() => {
+        if(func === "login" || func === "reset"){
+            setLoading(false)
+        } else {
+            try {
+                setLoading(true)
+                axios.get(baseUrl + '/sponsor?sponsorId=', requestConfig).then((response) => {
+                    console.log("AT GETDATA = " + JSON.stringify(response.data))
+                    setLoading(false)
+                    setSponsors((response.data))
+                })
+            } catch (error) {
+                setLoading(false);
+                authtools.handleError(error)
+                console.log(error);
+            }
+        }
+    }, [func]);
+
+    useEffect(() => {
+        if(func==="login"){
+            console.log(authtools.getCookies())
+            setLoading(true)
+            authtools.verify().then((response) => {
+                setLoading(false)
+                window.location.href = "/dashboard"
+            }, error => {
+                setLoading(false)
+            })
+        }
+    }, [])
+
+    // state that holds strength state and message for password validation
     const [passStatus, setPassStatus] = useState({
         progress: 0,
         message: ''
     })
 
+    //state that holds match status and message of confirm password field
+    const [confStatus, setConfStatus] = useState({
+        text: "",
+        match: false
+    })
+
+    //checks password strength and sets message
     const checkPassword = (pass) => {
         const strengthChecks = {
             length: 0,
@@ -84,11 +135,7 @@ export const Login = () => {
         })
     }
 
-    const [confStatus, setConfStatus] = useState({
-        text: "",
-        match: false
-    })
-
+    //checks validity of confirm password field
     const checkConfirm = (conf, pass) => {
         let cError = conf === pass ? "Looks good!" : "Passwords must match"
         let cMatch = conf === pass
@@ -98,22 +145,45 @@ export const Login = () => {
         })
     }
 
-    const [error, setError] = useState('')
-
-    const [func, setFunc] = useState('login')
-
     let form = <></>
     let navButton = <></>
     let submitButton = <></>
 
     let headerText = func === 'login' ? "Log in" : (func === 'apply') ? "Apply to be a Driver" : (func === 'reset') ? "Reset Password" : ""
 
+
+
+    const sponsorList = () => {
+        let list = []
+        sponsors.forEach(s => {
+            list.push(<option value={s.sponsorId}>{s.sponsorName}</option>)
+        })
+        return list
+    }
+
     //DRIVER APPLY
     if(func === 'apply'){
-
         submitButton = (
-            //TODO : CALL APPLY
-            <Button>Sign in</Button>
+            <Button onClick={(event => {
+                setLoading(true)
+                const reqBody = {
+                    "name" : apply.name,
+                    "username" : apply.username,
+                    "email" : apply.email,
+                    "password" : apply.password,
+                    "dob" : apply.dob,
+                    "sponsorIds": [apply.sponsor],
+                    "dlNum": apply.dlNum
+                }
+
+                axios.post(baseUrl + 'register', reqBody, requestConfig).then((response)=> {
+                    setLoading(false)
+                    setFunc('applied')
+                }, error => {
+                    authtools.handleError(error)
+                    //console.log(error.response.data.message)
+                })
+            })}>Sign in</Button>
         )
 
         navButton = (
@@ -131,11 +201,15 @@ export const Login = () => {
         form = (
             <>
                 <FormControl>
-
                     <FormLabel htmlFor="email">Sponsor Company</FormLabel>
-                    <SelectField placeholder="Select a company">
-                        <option value='option1'>ABC Trucking Co.</option>
-                        <option value='option2'>DEF Trucking Co.</option>
+                    <SelectField placeholder="Select a company" onChange={(event) => {
+                        setApply(prevState => ({
+                            ...prevState,
+                            sponsor: event.target.value
+                        }))
+                        console.log(apply)
+                    }}>
+                        {sponsorList()}
                     </SelectField>
 
                     <Stack spacing="5">
@@ -192,16 +266,32 @@ export const Login = () => {
                         }}/>
                         <Text color = {confStatus.match ? 'green' : 'red'}>{confStatus.text}</Text>
 
+                        <FormLabel htmlFor="dob">Date of Birth</FormLabel>
+                        <Input id="apply-dob" type="date" value={apply.dob} onChange={(event) => {
+                            setApply(prevState => ({
+                                ...prevState,
+                                dob: event.target.value
+                            }))
+                        }}/>
+
+                        <FormLabel htmlFor="apply-dl">Drivers License #</FormLabel>
+                        <Input id="apply-dl" type="text" value={apply.dlNum} onChange={(event) => {
+                            setApply(prevState => ({
+                                ...prevState,
+                                dlNum: event.target.value
+                            }))
+                        }}/>
+
                     </Stack>
                 </FormControl>
             </>
         )
 
-        submitButton = (
-            <Button onClick={() => {
-                setFunc("applied")
-            }}>Submit Application</Button>
-        )
+        // submitButton = (
+        //     <Button onClick={() => {
+        //         setFunc("applied")
+        //     }}>Submit Application</Button>
+        // )
 
         //PASSWORD RESET
     } else if (func === 'reset'){
@@ -305,10 +395,16 @@ export const Login = () => {
         )
     }
 
+    if(loading){
+        return (
+            <Container maxW="lg" py={{base: '12', md: '24'}} px={{base: '0', sm: '8'}}>
+                <Loading/>
+            </Container>
+        )
+    }
+
     return (
-
         <AnimateSharedLayout>
-
             <Container maxW="lg" py={{base: '12', md: '24'}} px={{base: '0', sm: '8'}}>
                 <Stack spacing="8">
                     <Stack spacing="6">

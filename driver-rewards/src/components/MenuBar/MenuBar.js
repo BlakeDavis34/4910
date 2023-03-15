@@ -1,7 +1,5 @@
 import './MenuBar.css'
-
 import React from 'react'
-
 import {
     Menu,
     MenuButton,
@@ -15,6 +13,8 @@ import {
     Flex,
     Grid
 } from '@chakra-ui/react'
+
+import authtools from '../../authtools'
 
 const testFunc = () => {
     console.log("Got menu click")
@@ -33,7 +33,9 @@ const MenuBar = () => {
                         <MenuItem as='button' onClick={() => {
                             window.location.href = "/profile"
                         }} href="/profile">Profile</MenuItem>
-                        <MenuItem>Logout</MenuItem>
+                        <MenuItem as='button' onClick = {() => {
+                            authtools.logout()
+                        }}>Logout</MenuItem>
                     </MenuGroup>
 
                 </MenuList>
