@@ -71,7 +71,7 @@ const Profile = () => {
                 }}/>
 
                 <FormLabel htmlFor="email" >Email</FormLabel>
-                <Input id="email" isDisabled={true} type="text" placeholder='Username' defaultValue = {user.email} width='300px' onChange={(event) => {
+                <Input id="email" isDisabled={true} type="text" placeholder='Email' defaultValue = {user.email} width='300px' onChange={(event) => {
 
                 }}/>
 
