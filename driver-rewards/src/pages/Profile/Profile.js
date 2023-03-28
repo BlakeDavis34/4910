@@ -14,11 +14,30 @@ import {FormControl,
 import {PasswordField} from "../../components/Login/PassField";
 import authtools from "../../authtools";
 import Loading from "../../components/Loading/loading"
+import axios from "axios";
 
 const Profile = () => {
 
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true)
+    const [profilePicture, setProfilePicture] = useState('');
+
+    const handlePictureChange = (event) => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+  
+      reader.onloadend = () => {
+        setProfilePicture(reader.result);
+      };
+  
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    };
+    const styles = {
+        maxWidth: '200px',
+        maxHeight: '200px',
+      };
 
     useEffect(() => {
         try{
@@ -45,15 +64,36 @@ const Profile = () => {
         <Center>
         <Stack spacing="5">
             <Center>
-                <Image
-                    borderRadius='full'
-                    boxSize='150px'
-                    src='https://www.sosyncd.com/wp-content/uploads/2022/03/18.png'
-                    alt='I got some birds like Im Julio'
-                />
+            {profilePicture !== '' && (
+        <img
+          src={profilePicture}
+          alt="Profile"
+          style={{
+            width: '200px',
+            height: '200px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+          }}
+        />
+      )}
+            <Center/>
+       
+           
+               
+          
             </Center>
             <Center>
-                <Button width='150px' alignItems="center">Change Picture</Button>
+                <Button>
+                     <label htmlFor="profile-picture-input">
+                    Change Profile Picture
+                    <input
+                        type="file"
+                        id="profile-picture-input"
+                        onChange={handlePictureChange}
+                        style={{ display: 'none' }}
+                    />
+                    </label>
+                </Button> 
             </Center>
             <FormLabel htmlFor="email">Sponsor Company</FormLabel>
             <Text size='xl'>ABC Trucking Co.</Text>

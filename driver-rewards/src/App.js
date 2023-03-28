@@ -6,6 +6,7 @@ import Profile from "./pages/Profile/Profile"
 import Applications from "./pages/Applications/Applications"
 import Activities from './pages/Activities/Activities'
 import ActivityCreate from './pages/Activities/CreateActivity'
+import PointHistory from "./pages/PointHistory/PointHistory"
 import "./App.css"
 import MenuBar from './components/MenuBar/MenuBar'
 
@@ -53,6 +54,7 @@ function App() {
                         <Route exact path="/applications" component={Applications}/>
                         <Route exact path="/activities" component={Activities}/>
                         <Route exact path="/activities/create" component={ActivityCreate}/>
+                        <Route exact path="/pointHistory" component={PointHistory} />
                     </Switch>
 
                 </div>
