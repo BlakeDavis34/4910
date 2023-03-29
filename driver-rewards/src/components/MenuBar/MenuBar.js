@@ -23,23 +23,26 @@ const testFunc = () => {
 const MenuBar = () => {
 
     return (
-        <div className="menu-items">
-            <Menu>
-                <MenuButton id = "profile-button" as={Button} colorScheme='blue' alignContent="right">
-                    Profile
-                </MenuButton>
-                <MenuList>
-                    <MenuGroup title='Account'>
-                        <MenuItem as='button' onClick={() => {
-                            window.location.href = "/profile"
-                        }} href="/profile">Profile</MenuItem>
-                        <MenuItem as='button' onClick = {() => {
-                            authtools.logout()
-                        }}>Logout</MenuItem>
-                    </MenuGroup>
+        <div className="bar-items">
+            <div className="menu-items">
+                <Menu>
+                    <MenuButton id = "profile-button" as={Button} colorScheme='blue' alignContent="right">
+                        Profile
+                    </MenuButton>
+                    <MenuList>
+                        <MenuGroup title='Account'>
+                            <MenuItem as='button' onClick={() => {
+                                window.location.href = "/profile"
+                            }} href="/profile">Profile</MenuItem>
+                            <MenuItem as='button' onClick = {() => {
+                                authtools.logout()
+                            }}>Logout</MenuItem>
+                        </MenuGroup>
 
-                </MenuList>
-            </Menu>
+                    </MenuList>
+                </Menu>
+            </div>
+            <h3 className="sponsor-header">ABC Trucking Co</h3>
         </div>
     )
 }
