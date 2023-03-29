@@ -57,6 +57,7 @@ const Profile = () => {
             </Center>
             <FormLabel htmlFor="email">Sponsor Company</FormLabel>
             <Text size='xl'>ABC Trucking Co.</Text>
+            <Button width='150px' alignItems="center">Leave Company</Button>
             <Center>
 
             <FormControl>
