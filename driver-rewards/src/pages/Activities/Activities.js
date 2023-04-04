@@ -32,6 +32,8 @@ import {
 
 import {useState} from "react";
 
+
+
 //function that acts as a struct
 function activity(name, description, deadline, progress, points) {
     this.name = name;
@@ -66,6 +68,11 @@ const activities = [
     )
 ]
 
+//0 = asc, 1 = desc
+let isDesc = 0;
+//0 = Name, 1 = Deadline, 2 = Points
+let wSort = 0;
+
 //function to display all activities in table
 const displayActivities = () => {
     let aList = []
@@ -93,6 +100,27 @@ const displayActivities = () => {
 const Activities = () => {
 
     const[table, setTable] = useState([]);
+
+    //sorting function
+    const whichSort = () => {
+        if (wSort===0) {        //sorting by name
+            if (isDesc===0) activities.sort((a, b) => a.name.localeCompare(b.name))
+            else activities.sort((a, b) => b.name.localeCompare(a.name))
+        }
+        else if (wSort===1) {   //sorting by deadline
+            activities.sort((a, b) => {
+                let da = new Date(a.deadline),
+                    db = new Date(b.deadline);
+                if (isDesc===0) return da - db; else return db - da;
+            })
+        }
+        else if (wSort===2) {   //sorting by points
+            if (isDesc===0) activities.sort((a, b) => {return a.points - b.points})
+            else activities.sort((a, b) => {return b.points - a.points})
+        }
+        setTable([...table, activities]);
+        return 0;
+    }
 
     return (
         <>
@@ -123,20 +151,27 @@ const Activities = () => {
                             <MenuList>
                                 <MenuGroup title='Sort by:'>
                                     <MenuItem as='button' onClick={() => {
-                                        activities.sort((a, b) => a.name.localeCompare(b.name))
-                                        setTable([...table, activities]);
+                                        isDesc = 0;
+                                        whichSort();
+                                    }} closeOnSelect={false}>Ascending</MenuItem>
+                                    <MenuItem as='button' onClick={() => {
+                                        isDesc = 1;
+                                        whichSort();
+                                    }} closeOnSelect={false}>Descending</MenuItem>
+                                </MenuGroup>
+                                    <MenuDivider />
+                                <MenuGroup>
+                                    <MenuItem as='button' onClick={() => {
+                                        wSort = 0;
+                                        whichSort();
                                     }}>Name</MenuItem>
                                     <MenuItem as='button' onClick={() => {
-                                        activities.sort((a, b) => {
-                                            let da = new Date(a.deadline),
-                                                db = new Date(b.deadline);
-                                            return da - db;
-                                        })
-                                        setTable([...table, activities]);
+                                        wSort = 1;
+                                        whichSort();
                                     }}>Deadline</MenuItem>
                                     <MenuItem as='button' onClick={() => {
-                                        activities.sort((a, b) => {return b.points - a.points})
-                                        setTable([...table, activities]);
+                                        wSort = 2;
+                                        whichSort();
                                     }}>Points</MenuItem>
                                 </MenuGroup>
                             </MenuList>
