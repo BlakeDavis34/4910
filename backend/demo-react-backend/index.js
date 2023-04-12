@@ -2,6 +2,8 @@ import * as loginService from './service/login.js'
 import * as verifyService from './service/verify.js'
 import * as registerService from './service/register.js'
 import * as userService from './service/user.js'
+import * as sponsorService from './service/sponsor.js'
+import * as activityService from './service/activity.js'
 
 import * as util from './utils/utils.js'
 
@@ -10,6 +12,8 @@ const registerPath = '/register'
 const loginPath = '/login'
 const verifyPath = '/verify'
 const userPath = '/user'
+const sponsorPath = '/sponsor'
+const activityPath = '/activity'
 
 export const handler = async(event) => {
     console.log('Request Received. Event = ', event)
@@ -34,7 +38,13 @@ export const handler = async(event) => {
             response = await verifyService.verify(verifyBody)
             break;
         case event.path === userPath:
-            response = await userService.crud(event)
+            response = await userService.reqHandler(event)
+            break;
+        case event.path === sponsorPath:
+            response = await sponsorService.reqHandler(event)
+            break;
+        case event.path === activityPath:
+            response = await activityService.reqHandler(event)
             break;
         default:
             response = util.buildResponse(404, "Invalid path")

@@ -29,6 +29,10 @@ export async function login(user) {
     if(CryptoJS.AES.decrypt(dynamoUser.password, process.env.JWT_SECRET).toString(CryptoJS.enc.Utf8) !== password) {
         return util.buildResponse(403, { message: 'password is incorrect'})
     }
+    
+    if(dynamoUser.approved === false){
+        return util.buildResponse(403, { message: 'Account not approved'})
+    }
 
     const userInfo = {
         username: dynamoUser.username,

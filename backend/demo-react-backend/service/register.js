@@ -9,6 +9,7 @@ import CryptoJS from 'crypto-js'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient()
 const userTable = 'demo-users'
+const date = new Date()
 
 export async function register(userInfo) {
     if(!userInfo){
@@ -20,7 +21,13 @@ export async function register(userInfo) {
     const email = userInfo.email
     const username = userInfo.username
     const password = userInfo.password
-    if(!username || !password || !email || !name){
+    const dob = userInfo.dob
+    const dlNum = userInfo.dlNum
+    const sponsorIds = userInfo.sponsorIds
+    //const dateCreated = userInfo.datecreated
+    
+    
+    if(!username || !password || !email || !name || !dob || !dlNum || !sponsorIds){
         return util.buildResponse(401, {
             message: 'All fields are required'
         })
@@ -33,6 +40,12 @@ export async function register(userInfo) {
             message: 'Username already exists.'
         })
     }
+    
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    
+    let currentDate = `${year}-${month}-${year}`;
 
     const encryptedPW = CryptoJS.AES.encrypt(password, process.env.JWT_SECRET).toString()
     console.error("ENCRYPTED PASSWORD = ", encryptedPW)
@@ -40,7 +53,12 @@ export async function register(userInfo) {
         name: name,
         email: email,
         username: username.toLowerCase().trim(),
-        password: encryptedPW
+        password: encryptedPW,
+        dob: dob,
+        dlNum: dlNum,
+        sponsorIds: sponsorIds,
+        dateCreated: currentDate,
+        approved: false
     }
 
     //save the user, notify user if unsuccessful

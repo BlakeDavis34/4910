@@ -12,9 +12,10 @@ const userTable = 'demo-users'
 
 async function getUser(user){
 
-    console.log("USER = " + user)
-
     const username = user.username
+    const token = user.token
+    
+    console.log("WE MADE IT... " + username + "    " + token)
 
     console.log("USER = " + user)
 
@@ -48,11 +49,12 @@ async function getUser(user){
     return util.buildResponse(200, response)
 }
 
-export async function crud(request){
+export async function reqHandler(request){
     switch(true){
         case request.httpMethod === 'GET':
-            console.log("PARAMS = " + JSON.stringify(request))
-            const getUserBody = JSON.parse(request.body)
-            return await getUser(getUserBody)
+            
+            const user = request.queryStringParameters
+
+            return await getUser(user)
     }
 }
