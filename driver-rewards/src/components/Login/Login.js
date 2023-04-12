@@ -274,6 +274,9 @@ export const Login = () => {
                             }))
                         }}/>
 
+                        <FormLabel>Referral Code</FormLabel>
+                        <Input id="apply-referral" type="text"/>
+
                         <FormLabel htmlFor="apply-dl">Drivers License #</FormLabel>
                         <Input id="apply-dl" type="text" value={apply.dlNum} onChange={(event) => {
                             setApply(prevState => ({
