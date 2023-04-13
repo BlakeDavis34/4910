@@ -1,4 +1,6 @@
 import {BrowserRouter, NavLink, Route, Switch} from "react-router-dom"
+import { Flex, Text, IconButton } from '@chakra-ui/react'
+import { FiMenu } from 'react-icons/fi'
 import React from "react"
 import Dashboard from "./pages/Dashboard/Dashboard"
 import Landing from "./pages/Landing/Landing"
@@ -6,9 +8,11 @@ import Profile from "./pages/Profile/Profile"
 import Applications from "./pages/Applications/Applications"
 import Activities from './pages/Activities/Activities'
 import ActivityCreate from './pages/Activities/CreateActivity'
+import Groups from './pages/Groups/Groups'
 import "./App.css"
 import MenuBar from './components/MenuBar/MenuBar'
-
+import Sidebar from "./components/SideMenu/SideMenu"
+import groups from "./pages/Groups/Groups"
 
 const baseUrl = 'https://o63s0n6hl9.execute-api.us-east-1.amazonaws.com/login-demo/'
 
@@ -34,18 +38,20 @@ function App() {
     //         />
     //     )
     // }
-
+    
     return (
+      
         <div className="App">
+             
             <BrowserRouter>
                 <div className="header">
-                    <MenuBar/>
-
-                    {/*<NavLink exact activeClassName="active" to="/">Dashboard</NavLink>*/}
-
+                    <div className="SideBar">
                 </div>
-
-                <div className="content">
+                    
+                </div>
+                <Sidebar />
+                <div className="content" >
+    
                     <Switch>
                         <Route exact path="/" component={Landing}/>
                         <Route exact path="/dashboard" component={Dashboard}/>
@@ -53,13 +59,29 @@ function App() {
                         <Route exact path="/applications" component={Applications}/>
                         <Route exact path="/activities" component={Activities}/>
                         <Route exact path="/activities/create" component={ActivityCreate}/>
+                        <Route exact path="/groups" components = {Groups}/>
                     </Switch>
 
                 </div>
+
+                <div>
+                    
+                </div>
+                
+                
+                {/* <SimpleSidebar/> */}
+
+    
+  
+
             </BrowserRouter>
         </div>
     );
+    <body>
+        
+    </body>
 }
 
 export default App;
+
 
