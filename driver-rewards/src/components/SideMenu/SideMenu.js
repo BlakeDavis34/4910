@@ -56,6 +56,7 @@ export default function Sidebar() {
                 <NavItem navSize={navSize} icon={FiCalendar} title="Activities"/>
                 <NavItem navSize={navSize} icon={FiUser} title="Groups" />
                 <NavItem navSize={navSize} icon={IoPawOutline} title="Notifications" />
+                <NavItem navSize={navSize} icon={FiSettings} title="Mail" />
                 <NavItem navSize={navSize} icon={FiSettings} title="Settings" />
             </Flex>
 
