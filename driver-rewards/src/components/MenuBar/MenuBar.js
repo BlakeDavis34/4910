@@ -33,6 +33,10 @@ const MenuBar = () => {
                         <MenuItem as='button' onClick={() => {
                             window.location.href = "/profile"
                         }} href="/profile">Profile</MenuItem>
+
+                        <MenuItem as='button' onClick={() => {
+                            window.location.href = "/dashboard"
+                        }} href="/dashboard">Dashboard</MenuItem>
                         <MenuItem as='button' onClick = {() => {
                             authtools.logout()
                         }}>Logout</MenuItem>
