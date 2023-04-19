@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
 
 const PointHistory = () => {
   const history = useHistory();
@@ -11,13 +12,10 @@ const PointHistory = () => {
     { description: 'Activity Completed', amount: 200 },
   ];
 
-  const handleGoBack = () => {
-    history.goBack();
-  };
 
   return (
     <div>
-      <button onClick={handleGoBack}>{"<- Back"}</button>
+       <Button onClick={() => { window.location.href = '/dashboard' }} href="/dashboard">Back</Button>
       <h1 style={{ textAlign: 'center' }}>Point History</h1>
       <table style={{ margin: '0 auto' }}>
         <thead>
