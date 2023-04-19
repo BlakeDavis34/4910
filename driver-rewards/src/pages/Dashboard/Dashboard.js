@@ -171,7 +171,7 @@ const Dashboard = () => {
                 <p>Catalog:</p>
               </TabPanel>
               <TabPanel>
-                <Link onClick={() => { window.location.href = '/pointhistory' }} href="/apointhistory" className="link">
+                <Link onClick={() => { window.location.href = '/pointhistory' }} href="/pointhistory" className="link">
                   View Full History
                 </Link>
                 <Graph />
