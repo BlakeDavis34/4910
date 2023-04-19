@@ -43,48 +43,38 @@ const getActivities = () => {
     })
 }
 
-const activityCard = (
 
-
-
-    <>
-        <Card maxW='sm'>
-            <CardBody>
-                <Image
-                    src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-                    alt='Green double couch with wooden legs'
-                    borderRadius='lg'
-                />
-                <Stack mt='6' spacing='3'>
-                    <Heading size='md'>Living room Sofa</Heading>
-                    <Text>
-                        This sofa is perfect for modern tropical spaces, baroque inspired
-                        spaces, earthy toned spaces and for people who love a chic design with a
-                        sprinkle of vintage design.
-                    </Text>
-                    <Text color='blue.600' fontSize='2xl'>
-                        $450
-                    </Text>
-                </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-                <Button>Close</Button>
-            </CardFooter>
-        </Card>
-    </>
-)
 
 const Activities = () => {
 
-    const [card, setCard] = useState(true)
+    const [card, setCard] = useState(false)
 
-    //console.log("drivers = " + JSON.stringify(driverlist))
-
-    //const columnHelper = createColumnHelper
+    const activityCard = (
+        <>
+            <Card maxW='sm'>
+                <CardBody>
+                    <Stack mt='6' spacing='3'>
+                        <Heading size='md'>Drive 1000 miles</Heading>
+                        <Text>
+                            Drive 1000 miles by Friday for 100 points!
+                        </Text>
+                        <Text color='blue.600' fontSize='2xl'>
+                            100 pts
+                        </Text>
+                    </Stack>
+                </CardBody>
+                <Divider />
+                <CardFooter>
+                    <Button onClick = {(e) => {
+                        setCard(false)
+                    }}>Close</Button>
+                </CardFooter>
+            </Card>
+        </>
+    )
 
     if(card){
-
+        return activityCard
     }
     return (
         <>
@@ -116,7 +106,9 @@ const Activities = () => {
                             {/*<Td>{activities[0].progress}</Td>*/}
                             <Td>{activities[0].points}</Td>
                             <Td>
-                                <Button>View</Button>
+                                <Button onClick = {(e) => {
+                                    setCard(true)
+                                }}>View</Button>
                             </Td>
                         </Tr>
 
