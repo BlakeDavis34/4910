@@ -1,7 +1,5 @@
 import './MenuBar.css'
-
 import React from 'react'
-
 import {
     Menu,
     MenuButton,
@@ -16,6 +14,8 @@ import {
     Grid
 } from '@chakra-ui/react'
 
+import authtools from '../../authtools'
+
 const testFunc = () => {
     console.log("Got menu click")
 }
@@ -23,25 +23,26 @@ const testFunc = () => {
 const MenuBar = () => {
 
     return (
-        <div className="menu-items">
-            <Menu>
-                <MenuButton id = "profile-button" as={Button} colorScheme='blue' alignContent="right">
-                    Profile
-                </MenuButton>
-                <MenuList>
-                    <MenuGroup title='Account'>
-                    <MenuItem as='button' onClick={() => {
-                            window.location.href = "/dashboard"
-                        }} href="/dashboard">Dashboard</MenuItem>
+        <div className="bar-items">
+            <div className="menu-items">
+                <Menu>
+                    <MenuButton id = "profile-button" as={Button} colorScheme='blue' alignContent="right">
+                        Profile
+                    </MenuButton>
+                    <MenuList>
+                        <MenuGroup title='Account'>
+                            <MenuItem as='button' onClick={() => {
+                                window.location.href = "/profile"
+                            }} href="/profile">Profile</MenuItem>
+                            <MenuItem as='button' onClick = {() => {
+                                authtools.logout()
+                            }}>Logout</MenuItem>
+                        </MenuGroup>
 
-                        <MenuItem as='button' onClick={() => {
-                            window.location.href = "/profile"
-                        }} href="/profile">Profile</MenuItem>
-                        <MenuItem>Logout</MenuItem>
-                    </MenuGroup>
-
-                </MenuList>
-            </Menu>
+                    </MenuList>
+                </Menu>
+            </div>
+            {/* <h3 className="sponsor-header">ABC Trucking Co</h3> */}
         </div>
     )
 }
