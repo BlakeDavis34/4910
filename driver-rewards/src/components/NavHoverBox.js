@@ -13,15 +13,15 @@ export default function NavHoverBox({ title, icon, description }) {
                 pos="absolute"
                 mt="calc(100px - 7.5px)"
                 ml="-10px"
-                width={0}
+                width={150}
                 height={0}
-                borderTop="10px solid transparent"
-                borderBottom="10px solid transparent"
-                borderRight="10px solid #82AAAD"
+                borderTop="5px solid transparent"
+                borderBottom="5px solid transparent"
+                borderRight="5px solid #82AAAD"
             />
             <Flex
                 h={200}
-                w={200}
+                w={150}
                 // w="100%"
                 flexDir="column"
                 alignItems="center"
