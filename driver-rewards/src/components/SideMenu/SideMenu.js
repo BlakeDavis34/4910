@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import {BrowserRouter, NavLink, Route, Switch} from "react-router-dom"
+import Dashboard from "../../.././src/pages/Dashboard/Dashboard"
+
 import {
     Flex,
     Text,
@@ -10,26 +13,25 @@ import {
 import {
     FiMenu,
     FiHome,
-    FiCalendar,
+    FiMail,
     FiUser,
-    FiDollarSign,
-    FiBriefcase,
     FiSettings
 } from 'react-icons/fi'
 import { IoPawOutline } from 'react-icons/io5'
 import NavItem from '../NavItem'
+import MenuBar from '../MenuBar/MenuBar'
 
 export default function Sidebar() {
     const [navSize, changeNavSize] = useState("large")
     return (
         <Flex
-            pos="sticky"
+            pos="absolute"
             left="5"
             h="95vh"
             marginTop="2.5vh"
             boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
             borderRadius={navSize == "small" ? "15px" : "30px"}
-            w={navSize == "small" ? "75px" : "200px"}
+            w={navSize == "small" ? "85px" : "200px"}
             flexDir="column"
             justifyContent="space-between"
         >
@@ -41,9 +43,9 @@ export default function Sidebar() {
                 as="nav"
             >
                 <IconButton
-                    background="none"
+                    // background="none"
                     mt={5}
-                    _hover={{ background: 'none' }}
+                    // _hover={{ background: 'none' }}
                     icon={<FiMenu />}
                     onClick={() => {
                         if (navSize == "small")
@@ -52,12 +54,13 @@ export default function Sidebar() {
                             changeNavSize("small")
                     }}
                 />
-                <NavItem navSize={navSize} icon={FiHome} title="Dashboard" description="This is the description for the dashboard." />
-                <NavItem navSize={navSize} icon={FiCalendar} title="Activities"/>
+                <NavItem navSize={navSize} icon={FiHome} title="Dashboard" >
+                <Route exact path="/dashboard" component={Dashboard}/>
+                 </NavItem>
+
+                <NavItem navSize={navSize} icon={FiMenu} title="Activities"/>
                 <NavItem navSize={navSize} icon={FiUser} title="Groups" />
-                <NavItem navSize={navSize} icon={IoPawOutline} title="Notifications" />
-                <NavItem navSize={navSize} icon={FiSettings} title="Mail" />
-                <NavItem navSize={navSize} icon={FiSettings} title="Settings" />
+                <NavItem navSize={navSize} icon={FiMail} title="Mail" />
             </Flex>
 
             <Flex
@@ -71,8 +74,8 @@ export default function Sidebar() {
                 <Flex mt={4} align="center">
                     <Avatar size="sm" src="avatar-1.jpg" />
                     <Flex flexDir="column" ml={4} display={navSize == "small" ? "none" : "flex"}>
-                        <Heading as="h3" size="sm">Sylwia Weller</Heading>
-                        <Text color="gray">Admin</Text>
+                        
+                        <MenuBar/>
                     </Flex>
                 </Flex>
             </Flex>
