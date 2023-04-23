@@ -10,9 +10,10 @@ const requestConfig = {
 
 const baseUrl = 'https://o63s0n6hl9.execute-api.us-east-1.amazonaws.com/login-demo/'
 
-const logout = () => {
+export const logout = () => {
     Cookies.set('TruckSession', '')
     Cookies.set('TruckUser', '')
+    window.location.href = '/'
 }
 
 const handleResponse = (response) => {
@@ -20,14 +21,19 @@ const handleResponse = (response) => {
 }
 
 const handleError = (error) => {
-    if(error.response.status === '403' || error.response.status === '401'){
+
+    //need 401 too?
+    if(error.response.status === 403){
         window.location.href = "/"
         logout()
         console.log("403 error...")
-        console.log("error = " + error.response.message)
+        console.log("error = " + error)
+        alert(error.response.data.message)
         return "invalid session"
     } else {
-        console.log("error = " + error.response.message)
+        console.log("uhhh")
+        console.log("error status = " + JSON.stringify(error.response.status))
+        console.log("error = " + JSON.stringify(error.response.data.message))
         return error.response.message
     }
 }
@@ -42,7 +48,7 @@ const authenticate = (username, password) => {
 
     axios.post(baseUrl + 'login', reqBody, requestConfig).then((response) => {
         Cookies.set('TruckSession', response.data.token)
-        Cookies.set('TruckName', response.data.user.username)
+        Cookies.set('TruckUser', response.data.user.username)
         handleResponse()
         window.location.href = "/dashboard"
         //console.log(response.data)
@@ -74,13 +80,13 @@ const callApi = (method, path, request) => {
 const getUser = async () => {
 
     var data = JSON.stringify({
-        "username": Cookies.get("TruckName"),
+        "username": Cookies.get("TruckUser"),
         "token": Cookies.get('TruckSession')
     });
 
     console.log("SESSION = " + Cookies.get('TruckSession'))
 
-    const params = new URLSearchParams([['username', Cookies.get("TruckName")], ['token', Cookies.get('TruckSession')]]);
+    const params = new URLSearchParams([['username', Cookies.get("TruckUser")], ['token', Cookies.get('TruckSession')]]);
 
     var config = {
         method: 'get',
@@ -101,7 +107,9 @@ const getUser = async () => {
 export const verify = () => {
 
     const username = Cookies.get('TruckUser')
-    const token = Cookies.get('TruckToken')
+    const token = Cookies.get('TruckSession')
+
+    console.log("USERNAME = " + username + " TOKEN = " + token)
 
     const requestBody = {
         user: {
@@ -110,14 +118,26 @@ export const verify = () => {
         token: token
     }
 
-    axios.post(baseUrl + 'verify', requestBody, requestConfig).then((response) => {
-        console.log(response)
+    return axios.post(baseUrl + 'verify', requestBody, requestConfig)
 
-        return response.data.user.username
-
-    }).catch((error) => {
-        return error.response.data.message
-    })
+    // axios.post(baseUrl + 'verify', requestBody, requestConfig).then((response) => {
+    //     console.log(response)
+    //
+    //     return true
+    //
+    //     // return response.data.user.username
+    //
+    // }).catch((error) => {
+    //     return false
+    //     // return error.response.data.message
+    // })
 }
 
-export default { verify, callApi, authenticate, getUser, handleError}
+export const getCookies = () => {
+    return {
+        "session" : Cookies.get('TruckSession'),
+        "username" : Cookies.get('TruckUser')
+    }
+}
+
+export default { getCookies, verify, callApi, authenticate, getUser, handleError, logout}
