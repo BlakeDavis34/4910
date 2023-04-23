@@ -9,6 +9,7 @@ import ActivityCreate from './pages/Activities/CreateActivity'
 import "./App.css"
 import MenuBar from './components/MenuBar/MenuBar'
 import SideBar from './components/SideMenu/SideMenu'
+import Catalog from './pages/Catalog/Catalog'
 
 
 const baseUrl = 'https://o63s0n6hl9.execute-api.us-east-1.amazonaws.com/login-demo/'
@@ -46,6 +47,7 @@ function App() {
                         <Route exact path="/applications" component={Applications}/>
                         <Route exact path="/activities" component={Activities}/>
                         <Route exact path="/activities/create" component={ActivityCreate}/>
+                        <Route exact path="/catalog" component={Catalog}/>
                     </Switch>
 
                 </div>
