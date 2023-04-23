@@ -30,43 +30,10 @@ import {
     // createColumnHelper
 } from '@chakra-ui/react'
 
-import {useState} from "react";
-
-
-
-//function that acts as a struct
-function activity(name, description, deadline, progress, points) {
-    this.name = name;
-    this.description = description;
-    this.deadline = deadline;
-    this.progress = progress;
-    this.points = points;
-}
-
-//premade activities, will fill with activities from API later
-const activities = [
-    new activity (
-        'Drive 1000 miles', 
-        'Drive 1000 miles by Friday for 100 points!',
-        '4/17/2023',
-        45/100,
-        100
-    ),
-    new activity (
-        'Avoid traffic violations',
-        'Avoid traffic violations all week for 50 points!',
-        '3/19/2023',
-        33/100,
-        50
-    ),
-    new activity (
-        'Daily login streak',
-        'Log in every day for 20 points!',
-        '3/15/2023',
-        0/100,
-        20
-    )
-]
+import {useEffect, useState} from "react";
+import axios from 'axios'
+import Loading from "../../components/Loading/loading";
+import Cookies from "js-cookie";
 
 //0 = asc, 1 = desc
 let isDesc = 0;
@@ -74,19 +41,16 @@ let isDesc = 0;
 let wSort = 0;
 
 //function to display all activities in table
-const displayActivities = () => {
+const displayActivities = (list) => {
     let aList = []
-    activities.forEach(a => {
+    list.forEach(a => {
         aList.push(
             <>
                 <Tr>
-                    <Td>{a.name}</Td>
+                    <Td>{a.activityId}</Td>
                     <Td>{a.description}</Td>
-                    <Td>{a.deadline}</Td>
-                    <Td>
-                        <Progress colorScheme='green' size='sm' value={a.progress * 100} />
-                    </Td>
-                    <Td>{a.points}</Td>
+                    <Td>{a.dateCreated}</Td>
+                    <Td>{a.maxPts}</Td>
                     <Td>
                         <Button>View</Button>
                     </Td>
@@ -100,7 +64,47 @@ const displayActivities = () => {
 const Activities = () => {
 
     const[table, setTable] = useState([]);
+    const [activities, setActivities] = useState({})
+    const [loading, setLoading] = useState(true)
 
+    let sParam = Cookies.get("TruckSponsor")
+    if (sParam === []) {
+        sParam = ''
+    }
+
+    //API call
+    const params = new URLSearchParams([['sponsorIds', sParam]]);
+        var config = {
+            method: 'get',
+            url: 'https://o63s0n6hl9.execute-api.us-east-1.amazonaws.com/login-demo/activity',
+            headers: {
+                'x-api-key': 'x6GaDjuUzPa0MBiphcMoo30GQJm06K6IaD6sSPWf',
+                'Content-Type': 'application/json',
+                'Authorization': Cookies.get("TruckUser") + ":" + Cookies.get("TruckSession")
+            },
+            params : params
+        };
+
+    useEffect(() => {
+        try {
+            setLoading(true)
+            axios(config).then((response) => {
+                console.log(JSON.stringify(response.data))
+                setLoading(false)
+                setActivities(response.data)
+            })
+        } catch {
+            console.log("error")
+            setLoading(false)
+        } 
+    },[])
+
+    if(loading){
+        return (
+            <Loading/>
+        )
+    }
+    
     //sorting function
     const whichSort = () => {
         if (wSort===0) {        //sorting by name
@@ -134,13 +138,12 @@ const Activities = () => {
                             <Th>Name</Th>
                             <Th>Description</Th>
                             <Th>Deadline</Th>
-                            <Th>Progress</Th>
                             <Th>Points</Th>
                             <Th></Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {displayActivities()}
+                        {displayActivities(activities)}
                     </Tbody>
                     <Tfoot><Tr><Td>
                     <div className="sort-options">
