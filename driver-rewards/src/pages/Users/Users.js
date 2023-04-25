@@ -1,3 +1,5 @@
+import './Users.css'
+
 import {
     Table,
     Thead,
@@ -35,19 +37,33 @@ import Loading from "../../components/Loading/loading";
 import Cookies from "js-cookie";
 import utils from "../../utils"
 
+//0 = asc, 1 = desc
+let isDesc = 0;
+//0 = Name, 1 = Deadline, 2 = Points
+let wSort = 0;
+
+//function to display all users in table
 const displayUsers = (list) => {
     let uList = []
+    let uType
     list.forEach(a => {
+        if (a.accountType === 0) {
+            uType = 'driver (pending)'
+        } else if (a.accountType === 1) {
+            uType = 'driver'
+        } else if (a.accountType === 2) {
+            uType = 'sponsor user'
+        } else { 
+            uType = 'admin'
+        }
         uList.push(
             <>
                 <Tr>
                     <Td>{a.username}</Td>
-                    <Td>{a.name}</Td>
-                    <Td>{a.dob}</Td>
-                    <Td>{a.dateCreated}</Td>
-                    <Td>{a.dlNum}</Td>
                     <Td>{a.email}</Td>
-                    <Td>{a.sponsorIds[0]}</Td>
+                    <Td>{a.sponsorIds}</Td>
+                    <Td>{uType}</Td>
+                    <Td>0</Td>
                 </Tr>
             </>
         )
@@ -57,6 +73,7 @@ const displayUsers = (list) => {
 
 const Users = () => {
 
+    const[table, setTable] = useState([]);
     const [userList, setUserList] = useState({})
     const [loading, setLoading] = useState(true)
 
@@ -98,6 +115,28 @@ const Users = () => {
         )
     }
     
+    //sorting function
+    const whichSort = () => {
+        if (wSort===0) {        //sorting by username
+            if (isDesc===0) userList.sort((a, b) => a.username.localeCompare(b.username))
+            else userList.sort((a, b) => b.username.localeCompare(a.username))
+        }
+        else if (wSort===1) {   //sorting by sponsor
+            if (isDesc===0) userList.sort((a, b) => a.sponsorIds.toString().localeCompare(b.sponsorIds.toString()))
+            else userList.sort((a, b) => b.sponsorIds.toString().localeCompare(a.sponsorIds.toString()))
+        }
+        else if (wSort===2) {   //sorting by account type
+            if (isDesc===0) userList.sort((a, b) => {return b.accountType - a.accountType})
+            else userList.sort((a, b) => {return a.accountType - b.accountType})
+        }
+        else if (wSort===3) {   //sorting by points
+            if (isDesc===0) userList.sort((a, b) => {return a.points - b.points})
+            else userList.sort((a, b) => {return b.points - a.points})
+        }
+        setTable([...table, userList]);
+        return 0;
+    }
+
     return (
         <>
             <TableContainer>
@@ -106,20 +145,54 @@ const Users = () => {
                     <Thead>
                         <Tr>
                             <Th>Username</Th>
-                            <Th>Name</Th>
-                            <Th>Date of Birth</Th>
-                            <Th>Account Created</Th>
-                            <Th>License ID</Th>
                             <Th>Email</Th>
                             <Th>Sponsor</Th>
-                            <Th></Th>
+                            <Th>Account Type</Th>
+                            <Th>Points</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {displayUsers(userList)}
                     </Tbody>
                     <Tfoot><Tr><Td>
-                    </Td></Tr></Tfoot>
+                    <div className="sort-options">
+                        <Menu closeOnSelect={false}>
+                            <MenuButton id = "sort-button" as={Button} colorScheme='blue' alignContent="right">
+                                Sort
+                            </MenuButton>
+                            <MenuList>
+                                <MenuGroup title='Sort by:'>
+                                    <MenuItem as='button' onClick={() => {
+                                        isDesc = 0;
+                                        whichSort();
+                                    }}>Ascending</MenuItem>
+                                    <MenuItem as='button' onClick={() => {
+                                        isDesc = 1;
+                                        whichSort();
+                                    }}>Descending</MenuItem>
+                                </MenuGroup>
+                                    <MenuDivider />
+                                <MenuGroup>
+                                    <MenuItem as='button' onClick={() => {
+                                        wSort = 0;
+                                        whichSort();
+                                    }}>Username</MenuItem>
+                                    <MenuItem as='button' onClick={() => {
+                                        wSort = 1;
+                                        whichSort();
+                                    }}>Sponsor</MenuItem>
+                                    <MenuItem as='button' onClick={() => {
+                                        wSort = 2;
+                                        whichSort();
+                                    }}>Account Type</MenuItem>
+                                    <MenuItem as='button' onClick={() => {
+                                        wSort = 3;
+                                        whichSort();
+                                    }}>Points</MenuItem>
+                                </MenuGroup>
+                            </MenuList>
+                        </Menu>
+                    </div></Td></Tr></Tfoot>
                 </Table>
             </TableContainer>
         </>
