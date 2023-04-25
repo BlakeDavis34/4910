@@ -147,7 +147,7 @@ const Activities = () => {
                     </Tbody>
                     <Tfoot><Tr><Td>
                     <div className="sort-options">
-                        <Menu>
+                        <Menu closeOnSelect={false}>
                             <MenuButton id = "sort-button" as={Button} colorScheme='blue' alignContent="right">
                                 Sort
                             </MenuButton>
@@ -156,11 +156,11 @@ const Activities = () => {
                                     <MenuItem as='button' onClick={() => {
                                         isDesc = 0;
                                         whichSort();
-                                    }} closeOnSelect={false}>Ascending</MenuItem>
+                                    }}>Ascending</MenuItem>
                                     <MenuItem as='button' onClick={() => {
                                         isDesc = 1;
                                         whichSort();
-                                    }} closeOnSelect={false}>Descending</MenuItem>
+                                    }}>Descending</MenuItem>
                                 </MenuGroup>
                                     <MenuDivider />
                                 <MenuGroup>
