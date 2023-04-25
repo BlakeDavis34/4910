@@ -87,14 +87,15 @@ const getUser = async () => {
 
     console.log("SESSION = " + Cookies.get('TruckSession'))
 
-    const params = new URLSearchParams([['username', Cookies.get("TruckUser")], ['token', Cookies.get('TruckSession')]]);
+    const params = new URLSearchParams([['userId', Cookies.get("TruckUser")], ['token', Cookies.get('TruckSession')], ['url', 'true']]);
 
     var config = {
         method: 'get',
         url: 'https://o63s0n6hl9.execute-api.us-east-1.amazonaws.com/login-demo/user',
         headers: {
             'x-api-key': 'x6GaDjuUzPa0MBiphcMoo30GQJm06K6IaD6sSPWf',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': getAuthHeader()
         },
         data : data,
         params : params
@@ -132,6 +133,11 @@ export const verify = () => {
     //     return false
     //     // return error.response.data.message
     // })
+}
+
+export const getAuthHeader = () => {
+    const retVal = `${Cookies.get('TruckUser')}:${Cookies.get('TruckSession')}`
+    return retVal
 }
 
 export const getCookies = () => {

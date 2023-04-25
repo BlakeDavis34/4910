@@ -1,95 +1,123 @@
-import { useState } from "react";
 import {
-  Button,
-  Link,
-  Progress,
-  Table,
-  TableCaption,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+    Table,
+    Thead,
+    Tbody,
+    Tfoot,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+    Text,
+    Button,
+    Progress,
+    Card,
+    CardBody,
+    CardFooter,
+    Heading,
+    Image,
+    Divider,
+    Stack,
+    Link
+    // createColumnHelper
+} from '@chakra-ui/react'
 
-function Activity({ name, description, deadline, progress, points }) {
-  const [isHidden, setIsHidden] = useState(false);
+import {useState} from "react";
 
-  return (
-    <>
-      <Tr display={isHidden ? "none" : "table-row"}>
-        <Td>{name}</Td>
-        <Td>{description}</Td>
-        <Td>{deadline}</Td>
-        <Td>
-          <Progress colorScheme="green" size="sm" value={progress * 100} />
-        </Td>
-        <Td>{points}</Td>
-        <Td>
-          <Button
-            onClick={() => {
-              setIsHidden((prevIsHidden) => !prevIsHidden);
-            }}
-          >
-            {isHidden ? "View" : "Hide"}
-          </Button>
-        </Td>
-      </Tr>
-    </>
-  );
+const activities = [
+    {
+        name: 'Drive 1000 miles',
+        description: 'Drive 1000 miles by Friday for 100 points!',
+        deadline: '3/3/2023',
+        progress: 45/100,
+        points: 100
+    },
+]
+
+const getActivities = () => {
+    let actList = []
+    activities.forEach(a => {
+        actList.push(<>
+        {/*<Th></Th>*/}
+        </>)
+    })
 }
 
+
+
 const Activities = () => {
-  const activities = [
-    {
-      name: "Drive 1000 miles",
-      description: "Drive 1000 miles by Friday for 100 points!",
-      deadline: "4/17/2023",
-      progress: 0.45,
-      points: 100,
-    },
-    {
-      name: "Avoid traffic violations",
-      description: "Avoid traffic violations all week for 50 points!",
-      deadline: "3/19/2023",
-      progress: 0.33,
-      points: 50,
-    },
-    {
-      name: "Daily login streak",
-      description: "Log in every day for 20 points!",
-      deadline: "3/15/2023",
-      progress: 0,
-      points: 20,
-    },
-  ];
 
-  return (
-    <>
-      <Text fontSize="3xl">Activities</Text>
-      
-      <Table>
-        <TableCaption>Activities</TableCaption>
-        <Thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th>Description</Th>
-            <Th>Deadline</Th>
-            <Th>Progress</Th>
-            <Th>Points</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {activities.map((activity) => (
-            <Activity {...activity} key={activity.name} />
-          ))}
-        </Tbody>
-      </Table>
-    </>
-  );
-};
+    const [card, setCard] = useState(false)
 
+    const activityCard = (
+        <>
+            <Card maxW='sm'>
+                <CardBody>
+                    <Stack mt='6' spacing='3'>
+                        <Heading size='md'>Drive 1000 miles</Heading>
+                        <Text>
+                            Drive 1000 miles by Friday for 100 points!
+                        </Text>
+                        <Text color='blue.600' fontSize='2xl'>
+                            100 pts
+                        </Text>
+                    </Stack>
+                </CardBody>
+                <Divider />
+                <CardFooter>
+                    <Button onClick = {(e) => {
+                        setCard(false)
+                    }}>Close</Button>
+                </CardFooter>
+            </Card>
+        </>
+    )
 
-export default Activities;
+    if(card){
+        return activityCard
+    }
+    return (
+        <>
+            <Text fontSize="3xl">Activities</Text>
+            <TableContainer>
+                <Table variant='simple'>
+                    <TableCaption>Activities</TableCaption>
+                    <Thead>
+                        <Tr>
+                            <Th>Name</Th>
+                            <Th>Description</Th>
+                            <Th>Deadline</Th>
+                            <Th>Progress</Th>
+                            <Th>Points</Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {/*{driverlist}*/}
+
+                        <Tr>
+                            <Td>{activities[0].name}</Td>
+                            <Td>{activities[0].description}</Td>
+                            <Td>{activities[0].deadline}</Td>
+                            <Td>
+                                <Progress colorScheme='green' size='sm' value={activities[0].progress * 100} />
+                            </Td>
+                            {/*<Td>{activities[0].progress}</Td>*/}
+                            <Td>{activities[0].points}</Td>
+                            <Td>
+                                <Button onClick = {(e) => {
+                                    setCard(true)
+                                }}>View</Button>
+                            </Td>
+                        </Tr>
+
+                    </Tbody>
+
+                </Table>
+            </TableContainer>
+        </>
+    )
+
+}
+
+export default Activities

@@ -1,7 +1,7 @@
 .header {
-    margin: 1em 0 2em 0;
-    padding-bottom: 1em;
-    border-bottom: 1px solid;
+    /* margin: 1em 0 2em 0; */
+    /* padding-bottom: 1em; */
+    /* border-bottom: 1px solid; */
 }
 
 .header a {
@@ -11,5 +11,10 @@
 }
 
 .content {
-    margin-left: 2em;
+    margin-left: 15em;
+}
+
+.SideBar {
+     
+    padding-top: 10px;
 }

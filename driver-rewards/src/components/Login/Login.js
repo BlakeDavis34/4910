@@ -151,8 +151,6 @@ export const Login = () => {
 
     let headerText = func === 'login' ? "Log in" : (func === 'apply') ? "Apply to be a Driver" : (func === 'reset') ? "Reset Password" : ""
 
-
-
     const sponsorList = () => {
         let list = []
         sponsors.forEach(s => {
@@ -172,8 +170,16 @@ export const Login = () => {
                     "email" : apply.email,
                     "password" : apply.password,
                     "dob" : apply.dob,
-                    "sponsorIds": [apply.sponsor],
-                    "dlNum": apply.dlNum
+                    // "sponsorIds": [apply.sponsor],
+                    "dlNum": apply.dlNum,
+                    // "applications": [
+                    //     {
+                    //         "sponsorId": apply.sponsor,
+                    //         "message": apply.comment
+                    //     }
+                    // ]
+                    "appliedTo": apply.sponsor,
+                    "applyComment": apply.comment
                 }
 
                 axios.post(baseUrl + 'register', reqBody, requestConfig).then((response)=> {
@@ -279,6 +285,14 @@ export const Login = () => {
                             setApply(prevState => ({
                                 ...prevState,
                                 dlNum: event.target.value
+                            }))
+                        }}/>
+
+                        <FormLabel htmlFor="apply-comment">Application Comment</FormLabel>
+                        <Input id="apply-dl" type="text" value={apply.comment} onChange={(event) => {
+                            setApply(prevState => ({
+                                ...prevState,
+                                comment: event.target.value
                             }))
                         }}/>
 

@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, useRef} from "react"
+import aws from 'aws-sdk'
+
 import {FormControl,
     FormLabel,
     Input,
@@ -14,30 +16,38 @@ import {FormControl,
 import {PasswordField} from "../../components/Login/PassField";
 import authtools from "../../authtools";
 import Loading from "../../components/Loading/loading"
-import axios from "axios";
+
+const s3_region = 'us-east-1'
+const s3_bucket = 'dwp-profile-pictures'
+const s3_accessKey = 'AKIAV25YJ7PAQOCO2QNC'
+const s3_secretKey = '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'
+
+const s3 = new aws.S3({
+    s3_region,
+    s3_bucket,
+    s3_accessKey,
+    s3_secretKey
+})
+
+const generateUrl = () => {
+    const time_nano = window.performance.now()
+
+    const params = {
+        Bucket: s3_bucket,
+        Key: time_nano,
+        Expires: 60
+    }
+}
+
+
 
 const Profile = () => {
 
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(true)
-    const [profilePicture, setProfilePicture] = useState('');
+    const [photo, setPhoto] = useState(null)
 
-    const handlePictureChange = (event) => {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-  
-      reader.onloadend = () => {
-        setProfilePicture(reader.result);
-      };
-  
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-    };
-    const styles = {
-        maxWidth: '200px',
-        maxHeight: '200px',
-      };
+    const inputPicture = useRef(null)
 
     useEffect(() => {
         try{
@@ -60,43 +70,57 @@ const Profile = () => {
         )
     }
 
+    const imageInput = document.querySelector("#pro-pic-upload")
+
+    async function fileHandler(e){
+        setPhoto(imageInput.files[0])
+        console.log("URL = " + user.secureUrl)
+        console.log("IMAGE = " + photo)
+
+        const url = user.secureUrl
+        //const file = imageInput.files
+
+        await fetch(url, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: photo
+        })
+        //console.log("USER = " + JSON.stringify(user))
+        const geturl = url.split('?')[0]
+        console.log("ACCESS = " + geturl)
+
+    }
+
+    //console.log("file = " + inputPicture.files[0])
+
+    //console.log("USER = " + user)
+
     return (
-        <Center>
+        <Center paddingTop = '7em'>
         <Stack spacing="5">
             <Center>
-            {profilePicture !== '' && (
-        <img
-          src={profilePicture}
-          alt="Profile"
-          style={{
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            objectFit: 'cover',
-          }}
-        />
-      )}
-            <Center/>
-       
-           
-               
-          
+                <Image
+                    borderRadius='full'
+                    boxSize='150px'
+                    src='https://www.sosyncd.com/wp-content/uploads/2022/03/18.png'
+                    alt='I got some birds like Im Julio'
+                />
             </Center>
             <Center>
-                <Button>
-                     <label htmlFor="profile-picture-input">
-                    Change Profile Picture
-                    <input
-                        type="file"
-                        id="profile-picture-input"
-                        onChange={handlePictureChange}
-                        style={{ display: 'none' }}
-                    />
-                    </label>
-                </Button> 
+                <Button width='150px' alignItems="center" onClick = {(e) => {
+                    inputPicture.current.click()
+                }}>
+                    Change Picture
+                </Button>
+                <Input id='pro-pic-upload' ref={inputPicture} type='file' display='none' onChange = {fileHandler}/>
+                {/*<Input id='pro-pic-upload' ref={inputPicture} type='file' display='none' onChange = {useState()}/>*/}
+
             </Center>
             <FormLabel htmlFor="email">Sponsor Company</FormLabel>
             <Text size='xl'>ABC Trucking Co.</Text>
+            <Button width='150px' alignItems="center">Leave Company</Button>
             <Center>
 
             <FormControl>
@@ -111,7 +135,7 @@ const Profile = () => {
                 }}/>
 
                 <FormLabel htmlFor="email" >Email</FormLabel>
-                <Input id="email" isDisabled={true} type="text" placeholder='Username' defaultValue = {user.email} width='300px' onChange={(event) => {
+                <Input id="email" isDisabled={true} type="text" placeholder='Email' defaultValue = {user.email} width='300px' onChange={(event) => {
 
                 }}/>
 

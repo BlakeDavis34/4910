@@ -88,6 +88,9 @@ function Graph() {
     else if (datestate == "Month"){
         return (
             <div>
+                <Link to="/PointHistory" className="link">
+                View Full History
+              </Link>
                 <select
                  className="custom-select"
                  onChange={(e) =>{
@@ -110,6 +113,9 @@ function Graph() {
     else{
         return (
             <div>
+                <Link to="/PointHistory" className="link">
+                View Full History
+              </Link>
                 <select
                  className="custom-select"
                  onChange={(e) =>{
