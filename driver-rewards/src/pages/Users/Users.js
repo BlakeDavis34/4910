@@ -49,48 +49,17 @@ let isDesc = 0;
 //0 = Name, 1 = Deadline, 2 = Points
 let wSort = 0;
 
-//function to display all users in table and allow admin to change point value
-const displayUsers = (list) => {
-    let uList = []
-    let uType
-    list.forEach(a => {
-        if (a.accountType === 0) {
-            uType = 'driver (pending)'
-        } else if (a.accountType === 1) {
-            uType = 'driver'
-        } else if (a.accountType === 2) {
-            uType = 'sponsor user'
-        } else { 
-            uType = 'admin'
-        }
-        uList.push(
-            <>
-                <Tr>
-                    <Td>{a.username}</Td>
-                    <Td>{a.email}</Td>
-                    <Td>{a.sponsorIds.join(', ')}</Td>
-                    <Td>{uType}</Td>
-                    <Td>{a.balance}</Td>
-                    <Td>
-                        <FormControl>
-                            <Input 
-                                id="newpoints" 
-                                type="number" 
-                                placeholder="New point total"/>
-                        </FormControl>
-                    </Td>
-                </Tr>
-            </>
-        )
-    })
-    return uList
-}
+
+
+
 
 const Users = () => {
 
     const[table, setTable] = useState([]);
     const [userList, setUserList] = useState({})
     const [loading, setLoading] = useState(true)
+
+    const [pointChange, setPointChange] = useState({})
 
     let sParam = Cookies.get("TruckSponsor")
     if (sParam === []) {
@@ -109,7 +78,6 @@ const Users = () => {
             },
             params : params
         };
-        
     useEffect(() => {
         try {
             setLoading(true)
@@ -130,6 +98,83 @@ const Users = () => {
         )
     }
     
+    //function to display all users in table and allow admin to change point value
+    const displayUsers =()=> {
+        let uList = []
+        let uType
+        userList.forEach(a => {
+            if (a.accountType === 0) {
+                uType = 'driver (pending)'
+            } else if (a.accountType === 1) {
+                uType = 'driver'
+            } else if (a.accountType === 2) {
+                uType = 'sponsor user'
+            } else { 
+                uType = 'admin'
+            }
+            uList.push(
+                <>
+                    <Tr>
+                        <Td>{a.username}</Td>
+                        <Td>{a.email}</Td>
+                        <Td>{a.sponsorIds.join(', ')}</Td>
+                        <Td>{uType}</Td>
+                        <Td>{a.points}</Td>
+                        <Td>
+                            <FormControl>
+                                <Input 
+                                id="points" 
+                                type="number"
+                                width='80px'
+                                onChange={(event) => {
+                                    handleChange(event, a.username)
+                                }}/>
+                            </FormControl>
+                        </Td>
+                        <Td>
+                            <Button onClick={()=>{
+                                let change = pointChange.changeVal
+                                let usr = pointChange.userId
+                                const params = new URLSearchParams([["userId", usr]]) 
+                                var ptsconfig = {
+                                    method: 'patch',
+                                    url: 'https://o63s0n6hl9.execute-api.us-east-1.amazonaws.com/login-demo/user?userId=' + usr,
+                                    headers: {
+                                        'x-api-key': 'x6GaDjuUzPa0MBiphcMoo30GQJm06K6IaD6sSPWf',
+                                        'Content-Type': 'application/json',
+                                        'Authorization': Cookies.get("TruckUser") + ":" + Cookies.get("TruckSession")
+                                    },
+                                    params: params,
+                                    data: {"points":"+" + change},
+                                };
+                                try {
+                                    setLoading(true)
+                                    axios(ptsconfig).then((response) => {
+                                        console.log(JSON.stringify(response.data))
+                                        a.points = response.data.user.points
+                                        setLoading(false)
+                                    })
+                                } catch {
+                                    console.log("error")
+                                    setLoading(false)
+                                }
+                            }}
+                            >Add</Button>
+                        </Td>
+                    </Tr>
+                </>
+            )
+        })
+        return uList
+    }
+
+    const handleChange = (event, usr) => {
+        setPointChange({
+            "changeVal":event.target.value,
+            "userId":usr
+        })
+    }
+
     //sorting function
     const whichSort = () => {
         if (wSort===0) {        //sorting by username
