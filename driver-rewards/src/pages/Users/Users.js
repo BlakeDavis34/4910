@@ -26,7 +26,14 @@ import {
     MenuOptionGroup,
     MenuDivider,
     Flex,
-    Grid
+    Grid,
+    FormControl,
+    FormLabel,
+    Heading,
+    HStack,
+    Input,
+    SelectField,
+    Center,
     // createColumnHelper
 } from '@chakra-ui/react'
 
@@ -42,7 +49,7 @@ let isDesc = 0;
 //0 = Name, 1 = Deadline, 2 = Points
 let wSort = 0;
 
-//function to display all users in table
+//function to display all users in table and allow admin to change point value
 const displayUsers = (list) => {
     let uList = []
     let uType
@@ -61,9 +68,17 @@ const displayUsers = (list) => {
                 <Tr>
                     <Td>{a.username}</Td>
                     <Td>{a.email}</Td>
-                    <Td>{a.sponsorIds}</Td>
+                    <Td>{a.sponsorIds.join(', ')}</Td>
                     <Td>{uType}</Td>
-                    <Td>0</Td>
+                    <Td>{a.balance}</Td>
+                    <Td>
+                        <FormControl>
+                            <Input 
+                                id="newpoints" 
+                                type="number" 
+                                placeholder="New point total"/>
+                        </FormControl>
+                    </Td>
                 </Tr>
             </>
         )
@@ -149,6 +164,7 @@ const Users = () => {
                             <Th>Sponsor</Th>
                             <Th>Account Type</Th>
                             <Th>Points</Th>
+                            <Th>Change points</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
